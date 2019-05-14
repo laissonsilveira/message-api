@@ -15,7 +15,7 @@ const UsersCtrl = require('../controllers/UsersCtrl');
  * @api {get} https://localhost/message-api/actions Lista Fontes
  * @apiDescription Lista as fontes cadastradas
  * @apiName GetActions
- * @apiGroup C-Sync Server
+ * @apiGroup message-api
  * @apiVersion 1.0.1
  *
  * @apiExample {curl} Example usage:
@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
     try {
         const userID = req.query.to;
         const messages = await MessagesCtrl.findByUser(userID);
-        if(Array.isArray(messages)) {
+        if (Array.isArray(messages)) {
             for (const msg of messages) {
                 msg.id = msg._id.toString();
                 delete msg._id;
@@ -63,7 +63,7 @@ router.get('/', async (req, res, next) => {
  * @api {post} https://localhost/message-api/actions Download Fontes
  * @apiDescription Efetua o download das fontes as serem atualizadas no cliente
  * @apiName PostAction
- * @apiGroup C-Sync Server
+ * @apiGroup message-api
  * @apiVersion 1.0.1
  *
  * @apiExample {curl} Example usage:

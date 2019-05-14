@@ -14,7 +14,7 @@ const LOGGER = require('../lib/logger');
  * @api {get} https://localhost/message-api/users Lista Clientes
  * @apiDescription Lista os clientes da DGT cadastrados e suas fontes
  * @apiName GetUsers
- * @apiGroup C-Sync Server
+ * @apiGroup message-api
  * @apiVersion 1.0.1
  *
  * @apiExample {curl} Example usage:
@@ -98,7 +98,7 @@ router.get('/', (req, res, next) => {
  * @api {get} https://localhost/message-api/users/:id Busca Cliente
  * @apiDescription Busca cliente pelo ID
  * @apiName GetUsersID
- * @apiGroup C-Sync Server
+ * @apiGroup message-api
  * @apiVersion 1.0.1
  *
  * @apiExample {curl} Example usage:
@@ -180,7 +180,7 @@ router.get('/:id', async (req, res, next) => {
  * @api {post} https://localhost/message-api/users Adiciona Cliente
  * @apiDescription Adiciona um novo cliente
  * @apiName PostUsers
- * @apiGroup C-Sync Server
+ * @apiGroup message-api
  * @apiVersion 1.0.1
  *
  * @apiExample {curl} Example usage:
