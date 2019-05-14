@@ -6,8 +6,8 @@
         "host": "localhost",
         "port": "27017",
         "dbName": "message-api",
-        "user": "laisson_admin",
-        "pass": "laisson_admin",
+        "user": "api_user",
+        "pass": "api_pwd",
         "authdb": "admin",
         "isDebug": true,
         "max_row": 10000

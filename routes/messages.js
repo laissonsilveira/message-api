@@ -90,7 +90,7 @@ router.post('/', async (req, res, next) => {
     try {
         await MessagesCtrl.validate(message);
         await MessagesCtrl.save(message);
-        await UsersCtrl.updateBudget(message.to);
+        await UsersCtrl.updateBudget(message.from);
         LOGGER.info(`[API-MESSAGES] Mensagem de '${message.from}' para '${message.to}' enviada com sucesso!`);
         res.end();
     } catch (err) {

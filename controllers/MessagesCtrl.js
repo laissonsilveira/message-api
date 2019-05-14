@@ -22,13 +22,15 @@ class MessagesCtrl {
         let msg;
         if (message.body && message.body.length > 280) {
             msg = 'Quantidade máxima de caracteres permitido excedido. [Máx. 280 caracteres]';
-        } else {
-            const userFound = await UsersModel.findById(message.to).lean();
+        } else if (message.from) {
+            const userFound = await UsersModel.findById(message.from).lean();
             if (userFound.budget === 0) msg = `Usuário '${userFound.name}' não possui mais saldos para o envio de mensagens.`;
         }
-        const error = new Error(msg);
-        error.isKnown = true;
-        throw error;
+        if (msg) {
+            const error = new Error(msg);
+            error.isKnown = true;
+            throw error;
+        }
     }
 
 }

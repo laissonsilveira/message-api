@@ -8,6 +8,17 @@ const UsersModel = mongoose.model('Users');
 
 class UserCtrl {
 
+    static async findAll() {
+        const usersFound = await UsersModel.find().lean();
+        if(Array.isArray(usersFound)) {
+            for (const user of usersFound) {
+                user.id = user._id.toString();
+                delete user._id;
+            }
+        }
+        return usersFound;
+    }
+    
     static async findById(userID) {
         const userFound = await UsersModel.findById(userID).lean();
         if(userFound) {

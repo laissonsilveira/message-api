@@ -108,7 +108,8 @@ describe('message-api tests', function () {
         let messageSaved, userTo, userFrom, userError;
         const user03 = { name: 'userTest03', budget: 1 };
         const message01 = { body: 'Message 01' };
-        const message02 = { body: 'skjdfksjdkfjhskdcnskjdncksjdncksjdhfksdncksjdnkajsnkajndksjnksjndfksjdflkjoioiwejoijofsdlclskdmclsxm ,x ,x sllsnflsnflskndlfsknlckls cls dcms ,dmc s,m dc,ms d,cm s,md ,s ,dm c,sm , cwkpokspdofsofposkdmwlkmlskdmflkmsldkmflkmlkmlkmsldkfnksndnksfl1' };
+        const message02 = { body: 'Message 02 '.repeat(29) };
+        const message03 = { body: 'Message 03 ' };
 
         beforeEach(async () => {
             userTo = await new UsersModel(user01).save();
@@ -116,6 +117,10 @@ describe('message-api tests', function () {
             userError = await new UsersModel(user03).save();
             message01.to = userTo.id;
             message01.from = userFrom.id;
+            message02.to = userTo.id;
+            message02.from = userFrom.id;
+            message03.to = userTo.id;
+            message03.from = userError.id;
 
             messageSaved = await new MessagesModel(message01).save();
         });
@@ -141,7 +146,7 @@ describe('message-api tests', function () {
                 const response02 = await chai.request(HOST_SERVER).post('/api/messages').send(message01);
                 expect(response02).to.have.status(200);
 
-                const userFound = await UsersModel.findById(message01.to);
+                const userFound = await UsersModel.findById(message01.from);
                 expect(userFound)
                     .to.have.property('budget')
                     .that.is.a('number')
@@ -167,9 +172,9 @@ describe('message-api tests', function () {
             });
 
             it('Saldo insuficiente', async () => {
-                const response01 = await chai.request(HOST_SERVER).post('/api/messages').send(message01);
+                const response01 = await chai.request(HOST_SERVER).post('/api/messages').send(message03);
                 expect(response01).to.have.status(200);
-                const response02 = await chai.request(HOST_SERVER).post('/api/messages').send(message01);
+                const response02 = await chai.request(HOST_SERVER).post('/api/messages').send(message03);
                 expect(response02).to.have.status(500);
                 expect(response02.body)
                     .that.is.an('object')

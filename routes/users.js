@@ -81,16 +81,13 @@ const LOGGER = require('../lib/logger');
  *     }
  * ]
  */
-router.get('/', (req, res, next) => {
-    const username = req.query.username;
-    if (username) {
-        LOGGER.info(`[API-USERS] Pesquisando usuário pelo username: '${username}'`);
-        UserCtrl.find(username)
-            .then(user => res.json(user))
-            .catch(err => next(err));
-    } else {
-        LOGGER.info('[API-USERS] Buscando por todos os usuários');
-        UserCtrl.findAll().then(users => res.json(users)).catch(err => next(err));
+router.get('/', async (req, res, next) => {
+    LOGGER.info('[API-USERS] Pesquisando todos usuários');
+    try {
+        const user = await UserCtrl.findAll();
+        res.json(user);
+    } catch (err) {
+        next(err);
     }
 });
 
