@@ -1,0 +1,33 @@
+{
+    "server": {
+        "port": "9090"
+    },
+    "database": {
+        "host": "localhost",
+        "port": "27017",
+        "dbName": "message-api",
+        "user": "laisson_admin",
+        "pass": "laisson_admin",
+        "authdb": "admin",
+        "isDebug": true,
+        "max_row": 10000
+    },
+    "log": {
+        "file": {
+            "level": "debug",
+            "json": false,
+            "colorize": false,
+            "maxsize": 5242880,
+            "maxFiles": 5,
+            "prettyPrint": true
+        },
+        "console": {
+            "level": "debug",
+            "json": false,
+            "colorize": true
+        },
+        "directory": "/tmp/message-api/"
+    },
+    "secretKey": "YXV0b3VwZGF0ZWRndA==",
+    "numberClusters": null
+}

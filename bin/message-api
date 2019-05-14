@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+/**
+ * @autor Laisson R. Silveira<laisson.r.silveira@gmail.com>
+ *
+ * Created on 12/05/2018
+ */
+global.__CONFIG = !global.__CONFIG && require('../config');
+if (!process.env.NODE_ENV) process.env.NODE_ENV = 'development';
+
+(async () => {
+    try {
+        await require('../lib/db').connect();
+        const cluster = require('cluster');
+        const server = require('../server');
+
+        if (cluster.isMaster) {
+            server.createWork(cluster);
+        } else {
+            server.fork();
+        }
+    } catch (error) {
+        process.exit();
+    }
+})();
