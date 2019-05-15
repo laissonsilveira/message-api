@@ -41,3 +41,5 @@ Mais informações aqui e aqui
 mongo message-api -u 'USUARIO_ROOT' -p 'SENHA_ROOT' --authenticationDatabase 'admin';
 
 db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"});//password:adminpwd
+
+DOC API: https://laissonsilveira.github.io/message-api/
