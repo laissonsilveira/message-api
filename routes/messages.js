@@ -3,7 +3,7 @@
  *
  * Created on 12/05/2018
  *
- * API - /actions
+ * API - /messages
  */
 const express = require('express');
 const router = express.Router();
@@ -12,36 +12,51 @@ const MessagesCtrl = require('../controllers/MessagesCtrl');
 const UsersCtrl = require('../controllers/UsersCtrl');
 
 /**
- * @api {get} https://localhost/message-api/actions Lista Fontes
- * @apiDescription Lista as fontes cadastradas
- * @apiName GetActions
+ * @api {get} http://localhost/api/messages Busca mensagens enviada
+ * @apiDescription Busca mensagens enviadas de um usuário
+ * @apiName GetMessages
  * @apiGroup message-api
- * @apiVersion 1.0.1
+ * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
- *  curl -X GET 'https://localhost/message-api/actions' \
+ *  curl -X GET 'https://localhost/api/messages?to=5cdb72aa488149c3f5850d1a' \
  *      -H 'Authorization: Bearer skdlkjlkje....'
  *
- * @apiSuccess {String} _id Identificador único da fonte
- * @apiSuccess {String} name Nome da fonte
- * @apiSuccess {String} version Versão da fonte
- * @apiSuccess {String} versionDate Data da versão da fonte
+ * @apiParam {String} to Identificador do usuário que recebeu a mensagem
+ *
+ * @apiSuccess {Object[]} messages Mensagens encontradas
+ * @apiSuccess {String} messages.id Identificador único do usuário
+ * @apiSuccess {String} messages.body Conteúdo da mensagem enviada
+ * @apiSuccess {String} messages.from Identificador do usuário que enviou a mensagem
+ * @apiSuccess {String} messages.to Identificador do usuário que recebeu a mensagem
+ * @apiSuccess {String} messages.sentAt Data de envio da mensagem
  *
  * @apiSuccessExample {json} Success-Response
- * [
- *    {
- *        "_id": "5c0c18f30ed9c94a52d0657c",
- *        "name": "bradesco",
- *        "version": "1.0.4",
- *        "versionDate": "2018-12-08T19:18:11.740Z"
- *    },
- *    {
- *        "_id": "5c11bdb20ed9c94a52d09fce",
- *        "name": "facebook",
- *        "version": "1.0.8",
- *        "versionDate": "2018-12-13T02:02:26.259Z"
- *    }
- * ]
+ * {
+ *   "messages": [
+ *       {
+ *           "body": "lalalalalal",
+ *           "from": "5cdb72aa488149c3f5850d1a",
+ *           "to": "5cdb970851d208db53d0f481",
+ *           "sentAt": "2019-05-15T04:37:11.751Z",
+ *           "id": "5cdb977751d208db53d0f483"
+ *       }
+ *   ]
+ * }
+ *
+ * @apiError (Error) {String} message Mensagem do erro
+ *
+ * @apiErrorExample {json} Caracteres excedidos
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *     "message": "Quantidade máxima de caracteres permitido excedido. [Máx. 280 caracteres]"
+ * }
+ *
+ * @apiErrorExample {json} Saldo insuficiente
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *     "message": "Quantidade máxima de caracteres permitido excedido. [Máx. 280 caracteres]"
+ * }
  */
 router.get('/', async (req, res, next) => {
     try {
@@ -53,36 +68,31 @@ router.get('/', async (req, res, next) => {
                 delete msg._id;
             }
         }
-        res.json(messages);
+        res.json({ messages });
     } catch (err) {
         next(err);
     }
 });
 
 /**
- * @api {post} https://localhost/message-api/actions Download Fontes
- * @apiDescription Efetua o download das fontes as serem atualizadas no cliente
- * @apiName PostAction
+ * @api {post} http://localhost/api/messages Salva mensagem
+ * @apiDescription Salva mensagem enviada para o usuário
+ * @apiName PostMessages
  * @apiGroup message-api
- * @apiVersion 1.0.1
+ * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
  *  curl -X POST \
- *    'https://localhost/api/actions' \
+ *    'http://localhost/api/messages' \
  *    -H 'Content-Type: application/json' \
  *    -d '{
- *            "actions": ["amil"]
- *        }'
- *
- * @apiParam {String[]} actions Lista de nome das fontes a serem atualizadas
- * @apiParamExample {json} Request-Example
- * {
- *     "actions": ["amil"]
- * }
+ *       	"body": "lalalalalal",
+ *       	"from": "5cdb72aa488149c3f5850d1a",
+ *       	"to": "5cdb975a51d208db53d0f482"
+ *       }'
  *
  * @apiSuccessExample {buffer} Success-Response
  * HTTP/1.1 200 OK
- * Buffer[]
  */
 router.post('/', async (req, res, next) => {
     const message = req.body;

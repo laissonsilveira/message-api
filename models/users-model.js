@@ -3,13 +3,23 @@
  *
  * Created on 12/05/2018
  */
+const { createHash } = require('../lib/utils');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    name: {
+    username: {
         type: String,
+        required: true,
+        lowercase: true,
         unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    name: {
+        type: String
     },
     budget: {
         type: Number,
@@ -24,5 +34,15 @@ const UserSchema = new Schema({
         default: Date.now
     }
 }, { versionKey: false });
+
+UserSchema.pre('save', function (next) {
+    const user = this;
+    if (user.isModified('password')) user.password = createHash(user.password);
+    next();
+});
+
+UserSchema.methods.comparePassword = function (candidatePassword) {
+    return this.password === createHash(candidatePassword) || this.password === candidatePassword;
+};
 
 module.exports = mongoose.model('Users', UserSchema);

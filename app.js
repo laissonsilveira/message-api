@@ -5,13 +5,15 @@
  */
 const express = require('express');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const Errors = require('./lib/errors');
-const LOGGER = require('./lib/logger.js');
-
+const LOGGER = require('./lib/logger');
+const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
 const messagesRouter = require('./routes/messages');
 
 const app = express();
+require('./lib/utils').configPassport();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use((req, res, next) => {
@@ -21,8 +23,9 @@ app.use((req, res, next) => {
 });
 
 // Bundle routes
-app.use('/api/users', usersRouter);
-app.use('/api/messages', messagesRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', passport.authenticate('jwt', { session: false }), usersRouter);
+app.use('/api/messages', passport.authenticate('jwt', { session: false }), messagesRouter);
 LOGGER.info('Rotas configuradas');
 
 // Config Errors

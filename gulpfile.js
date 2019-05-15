@@ -5,9 +5,10 @@
  * Created on 12/05/2018
  */
 // const moment = require('moment');
-// const { writeFileSync } = require('fs');
+const { writeFileSync } = require('fs');
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
+const apidoc = require('gulp-api-doc');
 // const clean = require('gulp-clean');
 // const tar = require('gulp-tar');
 // const gzip = require('gulp-gzip');
@@ -23,8 +24,32 @@ const { join } = require('path');
 // const buildMeta = require(DIST_BUILD_META);
 const packageFile = require('./package.json');
 const TESTS_PATH = './test/**/*.test.js';
+const ROUTES_API = './routes';
+const DIST_DOCS = './docs';
 
-// // =============================================== TEST ====================================================
+// =============================================== TEST ====================================================
+
+gulp.task('set-version-api', done => {
+    const apidocCrawler = {
+        name: 'Message API - Documentação',
+        description: 'Documentação de message-API',
+        title: 'Doc message-api',
+        version: require('./package').version
+    };
+    const DIST_APIDOC_API = join(__dirname, `./${DIST_DOCS}/apidoc.json`);
+    writeFileSync(DIST_APIDOC_API, JSON.stringify(apidocCrawler, null, 4));
+    done();
+});
+
+gulp.task('make-doc', () => {
+    return gulp.src(`${ROUTES_API}/**/*.js`)
+        .pipe(apidoc({ markdown: false, config: `${DIST_DOCS}` }))
+        .pipe(gulp.dest(DIST_DOCS));
+});
+
+gulp.task('doc', gulp.parallel('set-version-api', 'make-doc'));
+
+// =============================================== TEST ====================================================
 
 gulp.task('test', done => {
     process.env.NODE_ENV = 'test';

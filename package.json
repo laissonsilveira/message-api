@@ -25,8 +25,12 @@
     "dependencies": {
         "bluebird": "^3.5.4",
         "express": "^4.16.4",
+        "jsonwebtoken": "^8.5.1",
         "moment-timezone": "^0.5.25",
         "mongoose": "^5.5.7",
+        "passport": "^0.4.0",
+        "passport-jwt": "^4.0.0",
+        "passport-local": "^1.0.0",
         "winston": "^2.3.1",
         "winston-daily-rotate-file": "^3.9.0"
     },
@@ -34,6 +38,7 @@
         "chai": "^4.2.0",
         "chai-http": "^4.3.0",
         "gulp": "^4.0.2",
+        "gulp-api-doc": "^2.2.0",
         "gulp-mocha": "^6.0.0",
         "mochawesome": "^3.1.2",
         "mongodb-memory-server": "^5.1.1"

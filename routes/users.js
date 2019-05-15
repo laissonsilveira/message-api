@@ -11,74 +11,31 @@ const UserCtrl = require('../controllers/UsersCtrl');
 const LOGGER = require('../lib/logger');
 
 /**
- * @api {get} https://localhost/message-api/users Lista Clientes
- * @apiDescription Lista os clientes da DGT cadastrados e suas fontes
+ * @api {get} https://localhost/api/users Lista Usuários
+ * @apiDescription Lista os usuários
  * @apiName GetUsers
  * @apiGroup message-api
- * @apiVersion 1.0.1
+ * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
- *  curl -X GET 'https://localhost/message-api/users' -H 'Authorization: Bearer skdlkjlkje....'
+ *  curl -X GET 'https://localhost/api/users' \
+*    -H 'Authorization: Bearer CJstk7cypEDwaFW4...' \
  *
- * @apiSuccess {String} _id Identificador único do cliente
- * @apiSuccess {String} name Nome do cliente
- * @apiSuccess {String} username Nome de usuário do cliente
- * @apiSuccess {String} password Senha do cliente
- * @apiSuccess {String} token Token de validação do cliente
- * @apiSuccess {Object[]} actions Fontes disponíveis para o cliente
- * @apiSuccess {String} actions._id Identificador único da fonte
- * @apiSuccess {String} actions.name Nome da fonte
- * @apiSuccess {String} actions.version Versão da fonte
- * @apiSuccess {String} actions.versionDate Data da versão da fonte
- * @apiSuccess {Object[]} actionsInstalled Fontes instaladas no cliente
- * @apiSuccess {String} actionsInstalled._id Identificador único da fonte
- * @apiSuccess {String} actionsInstalled.name Nome da fonte
- * @apiSuccess {String} actionsInstalled.version Versão da fonte
- * @apiSuccess {String} actionsInstalled.versionDate Data da versão da fonte
+ * @apiSuccess {String} id Identificador único do cliente
+ * @apiSuccess {String} name Nome do usuário
+ * @apiSuccess {Number} budget Saldo do cliente
+ * @apiSuccess {Number} messageSentCount Quantidade de envio de mensagens
+ * @apiSuccess {String} createdAt Data de criação do usuário
  *
  * @apiSuccessExample {json} Success-Response
  * [
- *     {
- *         "_id": "5c0c056d8abbb3aaa833dfba",
- *         "name": "Laisson R. Silveira",
- *         "username": "laisson",
- *         "password": "42b3da517f9e384f43bcd7592bc2e900f54f725d",
- *         "token": "4c749356680a61faee4753b116c6db441e923c538ff2e129de1be5cef7ec5506",
- *         "actions": [
- *             {
- *                 "_id": "5c11bdb20ed9c94a52d09fce",
- *                 "name": "facebook",
- *                 "version": "1.0.8",
- *                 "versionDate": "2018-12-13T02:02:26.259Z"
- *             },
- *             {
- *                 "_id": "5c1abb45e076277b959efdd9",
- *                 "name": "goldencross",
- *                 "version": "1.0.1",
- *                 "versionDate": "2018-12-19T21:42:29.930Z"
- *             },
- *             {
- *                 "_id": "5c1abb4be076277b959efdde",
- *                 "name": "amil",
- *                 "version": "1.0.8",
- *                 "versionDate": "2018-12-19T21:42:35.569Z"
- *             }
- *         ],
- *         "actionsInstalled": [
- *             {
- *                 "versionDate": "2018-12-19T23:46:00.048Z",
- *                 "_id": "5c1ad838459e1936db11df86",
- *                 "name": "bradesco",
- *                 "version": "1.0.4"
- *             },
- *             {
- *                 "versionDate": "2018-12-19T23:46:00.048Z",
- *                 "_id": "5c1ad838459e1936db11df85",
- *                 "name": "facebook",
- *                 "version": "1.0.8"
- *             }
- *         ]
- *     }
+ *   {
+ *       "budget": 10,
+ *       "messageSentCount": 0,
+ *       "name": "laisson",
+ *       "createdAt": "2019-05-14T23:27:36.705Z",
+ *       "id": "5cdb4ee81fe76800228cfa5b"
+ *   }
  * ]
  */
 router.get('/', async (req, res, next) => {
@@ -92,74 +49,39 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * @api {get} https://localhost/message-api/users/:id Busca Cliente
- * @apiDescription Busca cliente pelo ID
+ * @api {get} https://localhost/api/users/:id Busca Usuário
+ * @apiDescription Busca usuário pelo ID
  * @apiName GetUsersID
  * @apiGroup message-api
- * @apiVersion 1.0.1
+ * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
- *  curl -X GET 'https://localhost/message-api/users/5c0c056d8abbb3aaa833dfba' -H 'Authorization: Bearer skdlkjlkje....'
+ *  curl -X GET 'https://localhost/api/users/5cdb4ee81fe76800228cfa5b' \
+ *    -H 'Authorization: Bearer CJstk7cypEDwaFW4...'
  *
  * @apiParam {String} id Identificador único do cliente
  *
- * @apiSuccess {String} _id Identificador único do cliente
- * @apiSuccess {String} name Nome do cliente
- * @apiSuccess {String} username Nome de usuário do cliente
- * @apiSuccess {String} password Senha do cliente
- * @apiSuccess {String} token Token de validação do cliente
- * @apiSuccess {Object[]} actions Fontes disponíveis para o cliente
- * @apiSuccess {String} actions._id Identificador único da fonte
- * @apiSuccess {String} actions.name Nome da fonte
- * @apiSuccess {String} actions.version Versão da fonte
- * @apiSuccess {String} actions.versionDate Data da versão da fonte
- * @apiSuccess {Object[]} actionsInstalled Fontes instaladas no cliente
- * @apiSuccess {String} actionsInstalled._id Identificador único da fonte
- * @apiSuccess {String} actionsInstalled.name Nome da fonte
- * @apiSuccess {String} actionsInstalled.version Versão da fonte
- * @apiSuccess {String} actionsInstalled.versionDate Data da versão da fonte
+ * @apiSuccess {String} id Identificador único do cliente
+ * @apiSuccess {String} name Nome do usuário
+ * @apiSuccess {Number} budget Saldo do cliente
+ * @apiSuccess {Number} messageSentCount Quantidade de envio de mensagens
+ * @apiSuccess {String} createdAt Data de criação do usuário
  *
  * @apiSuccessExample {json} Success-Response
  * {
- *     "_id": "5c0c056d8abbb3aaa833dfba",
- *     "name": "Laisson R. Silveira",
- *     "username": "laisson",
- *     "password": "42b3da517f9e384f43bcd7592bc2e900f54f725d",
- *     "token": "4c749356680a61faee4753b116c6db441e923c538ff2e129de1be5cef7ec5506",
- *     "actions": [
- *         {
- *             "_id": "5c11bdb20ed9c94a52d09fce",
- *             "name": "facebook",
- *             "version": "1.0.8",
- *             "versionDate": "2018-12-13T02:02:26.259Z"
- *         },
- *         {
- *             "_id": "5c1abb45e076277b959efdd9",
- *             "name": "goldencross",
- *             "version": "1.0.1",
- *             "versionDate": "2018-12-19T21:42:29.930Z"
- *         },
- *         {
- *             "_id": "5c1abb4be076277b959efdde",
- *             "name": "amil",
- *             "version": "1.0.8",
- *             "versionDate": "2018-12-19T21:42:35.569Z"
- *         }
- *     ],
- *     "actionsInstalled": [
- *         {
- *             "versionDate": "2018-12-19T23:46:00.048Z",
- *             "_id": "5c1ad838459e1936db11df86",
- *             "name": "bradesco",
- *             "version": "1.0.4"
- *         },
- *         {
- *             "versionDate": "2018-12-19T23:46:00.048Z",
- *             "_id": "5c1ad838459e1936db11df85",
- *             "name": "facebook",
- *             "version": "1.0.8"
- *         }
- *     ]
+ *     "budget": 10,
+ *     "messageSentCount": 0,
+ *     "name": "laisson",
+ *     "createdAt": "2019-05-14T23:27:36.705Z",
+ *     "id": "5cdb4ee81fe76800228cfa5b"
+ * }
+ *
+ * @apiError {String} message Mensagem de erro retornada
+ *
+ * @apiErrorExample {json} Error-Response
+ * HTTP/1.1 500 Internal Server Error
+ * {
+ *     "message": "Usuário 'Nome do usuário' não possui mais saldos para o envio de mensagens."
  * }
  */
 router.get('/:id', async (req, res, next) => {
@@ -167,33 +89,34 @@ router.get('/:id', async (req, res, next) => {
     LOGGER.info(`[API-USERS] Pesquisando usuário pelo ID: '${userID}'`);
     try {
         const user = await UserCtrl.findById(userID);
-        res.json(user);
+        res.json(user || {});
     } catch (err) {
         next(err);
     }
 });
 
 /**
- * @api {post} https://localhost/message-api/users Adiciona Cliente
- * @apiDescription Adiciona um novo cliente
+ * @api {post} https://localhost/api/users Adiciona Usuário
+ * @apiDescription Adiciona um novo usuário
  * @apiName PostUsers
  * @apiGroup message-api
- * @apiVersion 1.0.1
+ * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
  * curl -X POST \
- *   'https://localhost/message-api/users' \
+ *   'http://localhost/api/users' \
  *   -H 'Authorization: Bearer CJstk7cypEDwaFW4...' \
  *   -H 'Content-Type: application/json' \
  *   -d '{
- *         "name": "Um novo usuário"
+ *         "name": "Um novo usuário",
  *         "username": "novo usuário",
  *         "password": "senhaTeste",
- *      }'
+ *       }'
  *
- * @apiParam {String} name Nome do cliente
- * @apiParam {String} username Nome de usuário para o cliente
- * @apiParam {String} password Senha do cliente
+ * @apiParam {String} name Nome do usuário
+ * @apiParam {String} username Login de usuário
+ * @apiParam {String} password Senha do suário
+ *
  * @apiParamExample {json} Request-Example
  * {
  *    "name": "Um novo usuário"
@@ -201,23 +124,8 @@ router.get('/:id', async (req, res, next) => {
  *    "password": "senhaTeste",
  * }
  *
- * @apiSuccess {String} _id Identificador único do cliente
- * @apiSuccess {String} name Nome do cliente
- * @apiSuccess {String} username Nome de usuário do cliente
- * @apiSuccess {String} password Senha do cliente
- * @apiSuccess {String} token Token de validação do cliente
- * @apiSuccess {Object[]} actions Fontes disponíveis para o cliente
- * @apiSuccess {Object[]} actionsInstalled Fontes instaladas no cliente
- *
  * @apiSuccessExample {json} Success-Response
- * {
- *     "_id": "5c1c5ad37ba5fb5256145df7",
- *     "username": "novo usuário",
- *     "password": "5083acb4a3c0e6510b00eac9c5ed268cb6638450",
- *     "name": "Um novo usuário",
- *     "actions": [],
- *     "actionsInstalled": []
- * }
+ * HTTP/1.1 200 OK
  */
 router.post('/', async (req, res, next) => {
     const user = req.body;

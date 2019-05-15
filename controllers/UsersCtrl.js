@@ -9,8 +9,9 @@ const UsersModel = mongoose.model('Users');
 class UserCtrl {
 
     static async findAll() {
-        const usersFound = await UsersModel.find().lean();
-        if(Array.isArray(usersFound)) {
+        const projection = { username: 0, password: 0 };
+        const usersFound = await UsersModel.find({}, projection).lean();
+        if (Array.isArray(usersFound)) {
             for (const user of usersFound) {
                 user.id = user._id.toString();
                 delete user._id;
@@ -18,10 +19,16 @@ class UserCtrl {
         }
         return usersFound;
     }
-    
+
     static async findById(userID) {
-        const userFound = await UsersModel.findById(userID).lean();
-        if(userFound) {
+        if (!userID.match(/^[0-9a-fA-F]{24}$/)) {
+            const error = Error(`ID do usuário (${userID}) inválido`);
+            error.isKnown = true;
+            throw error;
+        }
+        const projection = { username: 0, password: 0 };
+        const userFound = await UsersModel.findById(userID, projection).lean();
+        if (userFound) {
             userFound.id = userFound._id.toString();
             delete userFound._id;
         }
@@ -38,6 +45,13 @@ class UserCtrl {
         userFound.budget--;
         userFound.messageSentCount++;
         await userFound.save();
+    }
+
+    static async find(username) {
+        username = username && username.toLowerCase();
+        const filter = { username: { $ne: 'admin', $eq: username } };
+        if (username === 'admin') delete filter.username.$ne;
+        return await UsersModel.findOne({ username });
     }
 
 }

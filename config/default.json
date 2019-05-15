@@ -28,6 +28,6 @@
         },
         "directory": "/tmp/message-api/"
     },
-    "secretKey": "YXV0b3VwZGF0ZWRndA==",
-    "numberClusters": null
+    "secretKey": "bWVzc2FnZS1hcGktbmVvd2F5",
+    "numberClusters": 1
 }

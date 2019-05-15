@@ -51,7 +51,7 @@ function onError(error) {
 function createWork(cluster) {
     LOGGER.info('...::: Message API :::...');
     LOGGER.info('Execute mode: [' + process.env.NODE_ENV + ']');
-    
+
     if (!!Number(__CONFIG.numberClusters)
         && Number(__CONFIG.numberClusters) <= clusterCount) {
         clusterCount = Number(__CONFIG.numberClusters);
@@ -69,13 +69,15 @@ function createWork(cluster) {
             LOGGER.info(`Worker ${worker.id} died :(`);
             cluster.fork();
         });
+    } else {
+        standard();
     }
 }
 
-function fork() {
+function standard() {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', () => LOGGER.info('Servidor iniciado na porta ' + app.get('port')));
 }
 
-module.exports = { createWork, fork };
+module.exports = { createWork, standard };
