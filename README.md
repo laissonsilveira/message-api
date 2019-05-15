@@ -2,13 +2,14 @@
 
 Servidor de mensageria
 
-## Desenvolvimento
+## Docker
+
+### Desenvolvimento
+
 - `docker build --rm -f "Dockerfile" -t message-api:latest .`
 - `docker run --name message-api --rm -it -p 9090:9090/tcp message-api:latest`
 
-## Publicando imagem
-- `docker tag message-api message-api:latest`
-- `docker push message-api:latest`
+
 
 ## Mongo
 
@@ -41,5 +42,10 @@ Mais informações aqui e aqui
 mongo message-api -u 'USUARIO_ROOT' -p 'SENHA_ROOT' --authenticationDatabase 'admin';
 
 db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"});//password:adminpwd
+
+### Autenticando
+
+mongo message-api -u 'api_user' -p 'api_pwd' --authenticationDatabase 'admin' --eval 'db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"})'
+
 
 DOC API: https://laissonsilveira.github.io/message-api/

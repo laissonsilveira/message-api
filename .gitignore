@@ -35,3 +35,4 @@ npm-debug.log
 build/*
 download
 message-api.tgz
+volumes

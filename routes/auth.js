@@ -14,7 +14,7 @@ const passport = require('passport');
 const LOGGER = require('../lib/logger');
 
 /**
- * @api {post} http://localhost/pi/auth/login Autenticação
+ * @api {post} http://localhost:9090/api/auth/login Autenticação
  * @apiDescription Authenticação do usuário
  * @apiName login
  * @apiGroup message-api
@@ -22,7 +22,7 @@ const LOGGER = require('../lib/logger');
  *
  * @apiExample {curl} Example usage:
  *  curl -X POST \
- *    'http://localhost/api/auth/login' \
+ *    'http://localhost:9090/api/auth/login' \
  *      -H 'Content-Type: application/json' \
  *      -d '{
  *      	"username": "usuario",

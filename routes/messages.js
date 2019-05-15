@@ -12,7 +12,7 @@ const MessagesCtrl = require('../controllers/MessagesCtrl');
 const UsersCtrl = require('../controllers/UsersCtrl');
 
 /**
- * @api {get} http://localhost/api/messages Busca mensagens enviada
+ * @api {get} http://localhost:9090/api/messages Busca mensagens enviada
  * @apiDescription Busca mensagens enviadas de um usuário
  * @apiName GetMessages
  * @apiGroup message-api
@@ -75,7 +75,7 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * @api {post} http://localhost/api/messages Salva mensagem
+ * @api {post} http://localhost:9090/api/messages Salva mensagem
  * @apiDescription Salva mensagem enviada para o usuário
  * @apiName PostMessages
  * @apiGroup message-api
@@ -83,7 +83,7 @@ router.get('/', async (req, res, next) => {
  *
  * @apiExample {curl} Example usage:
  *  curl -X POST \
- *    'http://localhost/api/messages' \
+ *    'http://localhost:9090/api/messages' \
  *    -H 'Content-Type: application/json' \
  *    -d '{
  *       	"body": "lalalalalal",

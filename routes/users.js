@@ -104,7 +104,7 @@ router.get('/:id', async (req, res, next) => {
  *
  * @apiExample {curl} Example usage:
  * curl -X POST \
- *   'http://localhost/api/users' \
+ *   'http://localhost:9090/api/users' \
  *   -H 'Authorization: Bearer CJstk7cypEDwaFW4...' \
  *   -H 'Content-Type: application/json' \
  *   -d '{
