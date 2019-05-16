@@ -1,2 +1,0 @@
-#!/bin/bash
-mongo --host $BD_IP:27017 message-api -u 'api_user' -p 'api_pwd' --authenticationDatabase 'admin' --eval 'db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"})'

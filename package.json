@@ -39,7 +39,12 @@
         "chai-http": "^4.3.0",
         "gulp": "^4.0.2",
         "gulp-api-doc": "^2.2.0",
+        "gulp-clean": "^0.4.0",
+        "gulp-gzip": "^1.4.2",
+        "gulp-install": "^1.1.0",
         "gulp-mocha": "^6.0.0",
+        "gulp-rename": "^1.4.0",
+        "gulp-tar": "^2.1.0",
         "mochawesome": "^3.1.2",
         "mongodb-memory-server": "^5.1.1"
     }

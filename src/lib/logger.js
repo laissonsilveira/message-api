@@ -8,8 +8,9 @@ const { existsSync, mkdirSync } = require('fs');
 const winston = require('winston');
 require('winston-daily-rotate-file');
 const { dateFormat } = require('./utils');
+const { NODE_ENV } = process.env;
 
-process.env.NODE_ENV !== 'test'
+NODE_ENV !== 'test'
     && !existsSync(__CONFIG.log.directory)
     && mkdirSync(__CONFIG.log.directory);
 
@@ -28,7 +29,7 @@ const config = {
     exitOnError: false
 };
 
-process.env.NODE_ENV !== 'test'
+NODE_ENV !== 'test'
     && config.transports.push(
         new winston.transports.DailyRotateFile({
             filename: join(__CONFIG.log.directory, 'message-api.log'),

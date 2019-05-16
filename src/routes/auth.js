@@ -60,4 +60,9 @@ router.post('/login', (req, res) => {
     })(req, res);
 });
 
+router.get('/test', (req, res) => {
+    LOGGER.info('Test');
+    res.end();
+});
+
 module.exports = router;

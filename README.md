@@ -2,50 +2,76 @@
 
 Servidor de mensageria
 
+## Documentação API
+
+- Disponível em
+ - https://laissonsilveira.github.io/message-api/
+ - `docs/index.html`
+- Para atualizar documentação, executar comando `npm run doc`
+
+## Dependências
+
+- Node.js >= 10
+- MongoDB >= 4
+- Docker >= 18
+
 ## Docker
 
-### Desenvolvimento
+### Build da imagem
 
+Caso a imagem ainda não esteja hospedada
 - `docker build --rm -f "Dockerfile" -t message-api:latest .`
-- `docker run --name message-api --rm -it -p 9090:9090/tcp message-api:latest`
 
+### Executando aplicação
 
+- Configurar arquivo `.env` com os dados de conexão com banco e quantidade de cluster para servidor da API
+- Mapear volume do database do containe Mongo
+  - Não foi feito configurações de cluster do banco por falta de tempo
+- Mapear volume do log do container API
+  - Outras configurações podem ser alteradas no arquivo `config/default.json`
+- Executar comando `docker-compose up`
+  - O comando acima irá subir 2 container
+    - Database: MongoDB 4.0.4
+    - API: Node.js 10.15.3
 
-## Mongo
+## Build sem Docker
 
-MongoDB 4.0.4
-Como instalar? Clique aqui
-Como acessar mongo? mongo --host <HOSTNAME> --port <PORT>
+### NodeJS / PM2
 
-### Criar usuários do banco
+- Instalar Node.js 10.15.3
+- Instalar PM2: `npm install pm2 -g` (Mais detalhes aqui -> http://pm2.keymetrics.io/)
+- Configurar PM2 para iniciar junto ao sistema: `pm2 startup`
 
-use admin;
-db.createUser({user:"USUARIO_ROOT",pwd:"SENHA_ROOT", roles:[{role:"root",db:"admin"}]});
+### Mongo
 
-Os inseridos devem ser configurados no arquivo de configuração (config/default.json)
-"database": {
-  ...
-  "user": "USUARIO_ROOT",
-  "pass": "SENHA_ROOT"
-  ...
-}
+- Instalar MongoDB 4.0.4
+- Ativar autenticação automática do serviço em vim `/etc/mongodb.conf`:
+  `security:
+    authorization: enabled`
+- Acessar mongo: mongo --host <HOSTNAME> --port <PORT> message-api -u 'api_user' -p 'api_pwd' --authenticationDatabase 'admin'
+- Criar usuários do banco
+  `use admin`
+  `db.createUser({user:"USUARIO_ROOT",pwd:"SENHA_ROOT", roles:[{role:"root",db:"admin"}]});`
+- Os inseridos devem ser configurados no arquivo de configuração (`config/default.json`)
+  `"database": {
+    ...
+    "user": "USUARIO_ROOT",
+    "pass": "SENHA_ROOT"
+    ...
+  }`
 
-### Habilitar Autenticação
+### Testes
 
-Editar /etc/mongod.conf e habilitar a linha security:
-security:
-  authorization: enabled
-Mais informações aqui e aqui
+- Instalar dependências: `MONGOMS_VERSION=4.0.4 npm install`
+  - Variável MONGOMS_VERSION é necessária para escolha da versão do mock do MongoDB que será instalado em cache
+- Os testes são executados usando `mocha`
+- Para executar os testes: `npm test`
+- Um relatório em HTML estará disponível em `test/covarage/mochawesome.html`
 
-### Inserir usuário de sistema admin
+### Gerando/Instalando pacote
 
-mongo message-api -u 'USUARIO_ROOT' -p 'SENHA_ROOT' --authenticationDatabase 'admin';
-
-db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"});//password:adminpwd
-
-### Autenticando
-
-mongo message-api -u 'api_user' -p 'api_pwd' --authenticationDatabase 'admin' --eval 'db.users.insert({"username": "admin","password":"1c46c18d116e5ff76b026510b54e603660c6954b","name": "Administrador"})'
-
-
-DOC API: https://laissonsilveira.github.io/message-api/
+- Instalar dependências: `npm install`
+- Executar comando: `npm run build`
+- Pacote `message-api.tgz` gerado na pasta `dist`
+- Descompatar arquivo e executar `pm2 start message-api/bin/message-api`
+- Outros comandos do pm2 disponíveis: http://pm2.keymetrics.io

@@ -7,6 +7,7 @@ const LOGGER = require('./logger');
 const mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 mongoose.set('useCreateIndex', true);
+const { NODE_ENV, BD_USER, BD_PWD, BD_IP, BD_PORT } = process.env;
 
 function serializer(data) {
     let query = JSON.stringify(data.query);
@@ -16,17 +17,17 @@ function serializer(data) {
 
 function _getUri() {
     let uri = 'mongodb://';
-    if (process.env.NODE_ENV !== 'test') uri += (process.env.BD_USER || __CONFIG.database.user) + ':' + (process.env.BD_PWD || __CONFIG.database.pass) + '@';
-    uri += (process.env.BD_IP || __CONFIG.database.host) + ':' + __CONFIG.database.port + '/';
+    if (NODE_ENV !== 'test') uri += (BD_USER || __CONFIG.database.user) + ':' + (BD_PWD || __CONFIG.database.pass) + '@';
+    uri += (BD_IP || __CONFIG.database.host) + ':' + (BD_PORT || __CONFIG.database.port) + '/';
     uri += __CONFIG.database.dbName;
-    if (process.env.NODE_ENV !== 'test') uri += '?authSource=' + __CONFIG.database.authdb;
+    if (NODE_ENV !== 'test') uri += '?authSource=' + __CONFIG.database.authdb;
     return uri;
 }
 
 const connectDB = async () => {
     return new Promise((resolve, reject) => {
         mongoose.connection.on('connected', () => {
-            LOGGER.info(`[DATABASE] conectado ao banco de dados: '${__CONFIG.database.host}:${__CONFIG.database.port}/${__CONFIG.database.dbName}'`);
+            LOGGER.info(`[DATABASE] conectado ao banco de dados: '${BD_IP || __CONFIG.database.host}:${__CONFIG.database.port}/${__CONFIG.database.dbName}'`);
             resolve();
         });
 
@@ -53,10 +54,8 @@ const connectDB = async () => {
         });
 
         (async () => {
-            require('../models/users-model');
-            LOGGER.info('Modelo de dados "Users" carregado com sucesso.');
+            const UsersModel = require('../models/users-model');
             require('../models/messages-model');
-            LOGGER.info('Modelo de dados "Messages" carregado com sucesso.');
 
             await mongoose.connect(_getUri(), {
                 useNewUrlParser: true,
@@ -64,6 +63,9 @@ const connectDB = async () => {
                 reconnectTries: 1000000,
                 reconnectInterval: 3000
             });
+
+            const user = await UsersModel.find({ username: 'admin' });
+            if (user.length === 0) await UsersModel.create({ name: 'Administrador', username: 'admin', password: 'adminpwd' });
         })();
     });
 };

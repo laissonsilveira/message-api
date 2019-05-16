@@ -9,4 +9,4 @@ COPY . .
 COPY --chown=node:node . .
 USER node
 EXPOSE 9090
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]

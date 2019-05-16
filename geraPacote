@@ -1,8 +1,0 @@
-#!/bin/bash
-#########################################################################
-# Script de criação do pacote
-#########################################################################
-# Autor : Laisson R. Silveira - <laisson.r.silveira@gmail.com.br>
-# Data : 12/05/2019
-MONGOMS_VERSION=4.0.4 npm install --development
-npm test && npm run build

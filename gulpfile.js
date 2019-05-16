@@ -1,31 +1,65 @@
-/*eslint no-console: ['error', { allow: ['log', 'error'] }] */
 /**
  * @autor Laisson R. Silveira<laisson.r.silveira@gmail.com>
  *
  * Created on 12/05/2018
  */
-// const moment = require('moment');
+const { join } = require('path');
 const { writeFileSync } = require('fs');
 const gulp = require('gulp');
 const mocha = require('gulp-mocha');
 const apidoc = require('gulp-api-doc');
-// const clean = require('gulp-clean');
-// const tar = require('gulp-tar');
-// const gzip = require('gulp-gzip');
-// const install = require('gulp-install');
-// const rename = require('gulp-rename');
-const { join } = require('path');
+const clean = require('gulp-clean');
+const tar = require('gulp-tar');
+const gzip = require('gulp-gzip');
+const install = require('gulp-install');
+const rename = require('gulp-rename');
 
 // // Files & Paths
-// const DIST_BUILD_META = './build-meta.json';
-// const DIST_PATH = 'build/';
-// const DEFAULT_PATH = 'home2/tmp/install/';
-// const PROJECT_NAME = 'message-api';
-// const buildMeta = require(DIST_BUILD_META);
+const DIST_PATH = 'build/';
+const PROJECT_NAME = 'message-api';
 const packageFile = require('./package.json');
 const TESTS_PATH = './test/**/*.test.js';
-const ROUTES_API = './routes';
+const ROUTES_API = '.src/routes';
 const DIST_DOCS = './docs';
+
+gulp.task('clean', () => {
+    return gulp.src(DIST_PATH + '*').pipe(clean());
+});
+
+gulp.task('copy', () => {
+    return gulp.src(['package*', 'src/**/*', 'bin/*'], { base: './' })
+        .pipe(gulp.dest(DIST_PATH));
+});
+
+gulp.task('compress', () => {
+    return gulp.src(`${DIST_PATH}**/*`)
+        .pipe(tar(PROJECT_NAME))
+        .pipe(gzip())
+        .pipe(rename(`${PROJECT_NAME}.tgz`))
+        .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('install-dependencies', () => {
+    const pathPackage = join(__dirname, DIST_PATH);
+    return gulp.src(join(pathPackage, 'package.json'))
+        .pipe(gulp.dest(pathPackage))
+        .pipe(install({ production: true }));
+});
+
+gulp.task('remove-files', () => {
+    return gulp.src(DIST_PATH + 'package*').pipe(clean());
+});
+
+gulp.task('build',
+    gulp.series(
+        'clean',
+        'copy',
+        'install-dependencies',
+        'remove-files',
+        'compress',
+        'clean',
+    )
+);
 
 // =============================================== TEST ====================================================
 

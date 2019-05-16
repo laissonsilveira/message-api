@@ -8,7 +8,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=$BD_USER
       - MONGO_INITDB_ROOT_PASSWORD=$BD_PWD
     volumes:
-      - ./volumes/mongo/data/:/data/db
+      - ./volumes/db/data/:/data/db
     ports:
       - 27017:27017
     networks:
@@ -20,12 +20,15 @@ services:
     restart: always
     environment:
       BD_IP: $BD_IP
+      BD_PORT: $BD_PORT
+      NODE_ENV: production
+      NUMBER_CLUSTERS: $NUMBER_CLUSTERS
+    links:
+      - database
     depends_on:
       - database
     volumes:
-      - ./scripts/insertAdminUserDB.sh:/usr/local/bin/insertAdminUserDB.sh
-    # command:
-    #   - insertAdminUserDB.sh
+      - ./volumes/logs/:/tmp/message-api/
     ports:
       - 9090:9090
     networks:

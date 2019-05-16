@@ -1,0 +1,33 @@
+{
+    "server": {
+        "port": "9090"
+    },
+    "database": {
+        "host": "localhost",
+        "port": "27017",
+        "dbName": "message-api",
+        "user": "api_user",
+        "pass": "api_pwd",
+        "authdb": "admin",
+        "isDebug": true,
+        "max_row": 10000
+    },
+    "log": {
+        "file": {
+            "level": "debug",
+            "json": false,
+            "colorize": false,
+            "maxsize": 5242880,
+            "maxFiles": 5,
+            "prettyPrint": true
+        },
+        "console": {
+            "level": "debug",
+            "json": false,
+            "colorize": true
+        },
+        "directory": "/tmp/message-api/"
+    },
+    "secretKey": "bWVzc2FnZS1hcGktbmVvd2F5",
+    "numberClusters": 1
+}

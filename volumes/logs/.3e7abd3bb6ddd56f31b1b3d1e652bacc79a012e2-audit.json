@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 5
+    },
+    "auditLog": "/tmp/message-api/.3e7abd3bb6ddd56f31b1b3d1e652bacc79a012e2-audit.json",
+    "files": [
+        {
+            "date": 1557966527639,
+            "name": "/tmp/message-api/message-api.log.2019-05-16",
+            "hash": "94e00b63305440f8d43b9bc04e50e490"
+        }
+    ]
+}

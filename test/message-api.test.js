@@ -11,7 +11,7 @@ chai.use(chaiHttp);
 chai.config.includeStack = false;
 const expect = chai.expect;
 const moment = require('moment');
-global.__CONFIG = require('../config');
+global.__CONFIG = require('../src/config');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 let mongod;
@@ -38,8 +38,7 @@ describe('message-api tests', function () {
         // Aguarda 3 segundos para criação do mongo em memória para começar os testes
         console.log('Aguardando MongoDB iniciar em memória...');
         setTimeout(async () => {
-            await require('../lib/db').connect();
-            require('../server').standard();
+            require('../bin/message-api');
             const mongoose = require('mongoose');
             UsersModel = mongoose.model('Users');
             MessagesModel = mongoose.model('Messages');
