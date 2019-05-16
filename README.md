@@ -1,3 +1,4 @@
+
 # message-api
 
 Servidor de mensageria
@@ -5,8 +6,8 @@ Servidor de mensageria
 ## Documentação API
 
 - Disponível em
- - https://laissonsilveira.github.io/message-api/
- - `docs/index.html`
+  - https://laissonsilveira.github.io/message-api/
+  - `docs/index.html`
 - Para atualizar documentação, executar comando `npm run doc`
 
 ## Dependências
