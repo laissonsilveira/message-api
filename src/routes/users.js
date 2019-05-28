@@ -11,7 +11,7 @@ const UserCtrl = require('../controllers/UsersCtrl');
 const LOGGER = require('../lib/logger');
 
 /**
- * @api {get} https://localhost/api/users Lista Usuários
+ * @api {get} http://localhost:9090/api/users Lista Usuários
  * @apiDescription Lista os usuários
  * @apiName GetUsers
  * @apiGroup message-api
@@ -49,14 +49,14 @@ router.get('/', async (req, res, next) => {
 });
 
 /**
- * @api {get} https://localhost/api/users/:id Busca Usuário
+ * @api {get} http://localhost:9090/api/users/:id Busca Usuário
  * @apiDescription Busca usuário pelo ID
  * @apiName GetUsersID
  * @apiGroup message-api
  * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
- *  curl -X GET 'https://localhost/api/users/5cdb4ee81fe76800228cfa5b' \
+ *  curl -X GET 'http://localhost:9090/api/users/5cdb4ee81fe76800228cfa5b' \
  *    -H 'Authorization: Bearer CJstk7cypEDwaFW4...'
  *
  * @apiParam {String} id Identificador único do cliente
@@ -96,7 +96,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 /**
- * @api {post} https://localhost/api/users Adiciona Usuário
+ * @api {post} http://localhost:9090/api/users Adiciona Usuário
  * @apiDescription Adiciona um novo usuário
  * @apiName PostUsers
  * @apiGroup message-api

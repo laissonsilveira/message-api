@@ -19,7 +19,7 @@ const DIST_PATH = 'build/';
 const PROJECT_NAME = 'message-api';
 const packageFile = require('./package.json');
 const TESTS_PATH = './test/**/*.test.js';
-const ROUTES_API = '.src/routes';
+const ROUTES_API = './src/routes';
 const DIST_DOCS = './docs';
 
 gulp.task('clean', () => {
@@ -77,7 +77,7 @@ gulp.task('set-version-api', done => {
 
 gulp.task('make-doc', () => {
     return gulp.src(`${ROUTES_API}/**/*.js`)
-        .pipe(apidoc({ markdown: false, config: `${DIST_DOCS}` }))
+        .pipe(apidoc({ markdown: false, template: DIST_DOCS, config: `${DIST_DOCS}` }))
         .pipe(gulp.dest(DIST_DOCS));
 });
 

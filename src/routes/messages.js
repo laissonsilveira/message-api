@@ -19,7 +19,7 @@ const UsersCtrl = require('../controllers/UsersCtrl');
  * @apiVersion 1.0.0
  *
  * @apiExample {curl} Example usage:
- *  curl -X GET 'https://localhost/api/messages?to=5cdb72aa488149c3f5850d1a' \
+ *  curl -X GET 'http://localhost:9090/api/messages?to=5cdb72aa488149c3f5850d1a' \
  *      -H 'Authorization: Bearer skdlkjlkje....'
  *
  * @apiParam {String} to Identificador do usuário que recebeu a mensagem
